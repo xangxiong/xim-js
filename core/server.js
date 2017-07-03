@@ -11,6 +11,7 @@ const port = 3000;
 const app = express();
 const compiler = webpack(config);
 
+/*
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
   publicPath: config.output.publicPath
@@ -22,7 +23,9 @@ app.use(favicon(path.join(__dirname,'..','public','favicon.ico')));
 app.get('*', function(req, res) {
   res.sendFile(path.join( __dirname, '../public/index.html'));
 });
+*/
 
+/*
 app.listen(port, function(err) {
   if (err) {
     console.log(err);
@@ -30,3 +33,4 @@ app.listen(port, function(err) {
     open(`http://localhost:${port}`);
   }
 });
+*/

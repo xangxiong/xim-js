@@ -6,7 +6,7 @@
   "scripts": {
     "test": "test",
     "start": "npm-run-all --parallel open:src lint:watch",
-    "open:src": "babel-node core/server.js",
+    "open:src": "babel-node core/main.js",
     "lint": "node_modules/.bin/esw webpack.config.* src utils",
     "lint:watch": "npm run lint -- --watch"
   },
