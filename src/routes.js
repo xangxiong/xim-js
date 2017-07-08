@@ -1,11 +1,11 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Switch, Route } from 'react-router-dom';
+import AppRoutes from './app/routes';
+import AuthRoutes from './auth/routes';
 
-/*
 export default (
-  <Route path="/" component={App}>
-    <IndexRoute component={HomePage} />
-    <Route path="/cats" component={CatsPage} />
-  </Route>
+	<Switch>
+		{AppRoutes}
+		{AuthRoutes}
+	</Switch>
 );
-*/
