@@ -1,11 +1,18 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
-import Index from './index';
+import { Route, Link } from 'react-router-dom';
+import { Icon } from 'semantic-ui-react';
 
-const App = (props) => (
-	<div className="app">
-		<Route path="/" component={Index} />
-	</div>
-);
+class App extends React.Component {
+	render() {
+		return (
+			<div>
+				<Icon className="alarm" />
+				<div className="app">
+					App
+				</div>
+			</div>
+		);
+	}
+}
 
 export default App;

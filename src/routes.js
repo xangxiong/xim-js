@@ -5,7 +5,7 @@ import AuthRoutes from './auth/routes';
 
 export default (
 	<Switch>
-		{AppRoutes}
 		{AuthRoutes}
+		{AppRoutes}		
 	</Switch>
 );

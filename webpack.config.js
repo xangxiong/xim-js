@@ -10,12 +10,9 @@ export default {
   ],
   target: 'web',
   output: {
-    path: path.join(__dirname, 'dist'),
-    publicPath: '/',
+    path:  path.join(__dirname, 'assets'),
+    publicPath: '/assets',
     filename: 'bundle.js'
-  },  
-  devServer: {
-    contentBase: 'public'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin()
@@ -24,10 +21,8 @@ export default {
     loaders: [
       {test: /\.js$/, include: path.join(__dirname, 'src'), loaders: ['babel-loader']},
       {test: /(\.css)$/, loaders: ['style', 'css-loader']},
-      {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader'},
-      {test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000'},
-      {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream'},
-      {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'}
+      {test: /\.(ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader'},
+      {test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'}
     ]
   }
 };
