@@ -1,11 +1,11 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import AppRoutes from './app/routes';
-import AuthRoutes from './auth/routes';
+import AppRoutes from './modules/app/routes';
+import AuthRoutes from './modules/auth/routes';
 
 export default (
-	<Switch>
+	<div id="routes">
 		{AuthRoutes}
-		{AppRoutes}		
-	</Switch>
+		{AppRoutes}
+	</div>
 );

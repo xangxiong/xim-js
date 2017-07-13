@@ -17,10 +17,10 @@ app.use(require('webpack-dev-middleware')(compiler, {
 }));
 
 app.use(require('webpack-hot-middleware')(compiler));
-app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'favicon.ico')));
 
 app.get('*', function(req, res) {
-  res.sendFile(path.join( __dirname, '../src/index.html'));
+  res.sendFile(path.join( __dirname, 'index.html'));
 });
 
 app.listen(port, function(err) {

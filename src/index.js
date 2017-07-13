@@ -5,6 +5,8 @@ import { render } from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
 import routes from './routes';
 
+require('semantic-ui/dist/semantic.css');
+
 render((
 	<BrowserRouter>
 		{routes}

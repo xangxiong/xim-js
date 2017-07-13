@@ -20,8 +20,8 @@ export default {
   module: {
     loaders: [
       {test: /\.js$/, include: path.join(__dirname, 'src'), loaders: ['babel-loader']},
-      {test: /(\.css)$/, loaders: ['style', 'css-loader']},
-      {test: /\.(ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader'},
+      {test: /(\.css)$/, loaders: ['style-loader', 'css-loader']},
+      {test: /\.(ttf|eot|svg|png|jpg)(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader'},
       {test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'}
     ]
   }
