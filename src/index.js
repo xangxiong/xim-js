@@ -9,6 +9,8 @@ require('semantic-ui/dist/semantic.css');
 
 render((
 	<BrowserRouter>
-		{routes}
+		<div id="routes">
+			{routes}
+		</div>
 	</BrowserRouter>
 ), document.getElementById('app'));

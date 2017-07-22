@@ -1,0 +1,11 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Application Module",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "author": "Xang Xiong",
+  "license": "MIT"
+}
