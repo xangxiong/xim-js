@@ -1,23 +1,55 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-import { Icon, Sidebar, Dropdown, Item, Menu } from 'semantic-ui-react';
-import menus from '../menus';
+import { Icon, Sidebar, Dropdown, Item, Menu, Divider } from 'semantic-ui-react';
+import menus from '../../../menus';
 
 class LeftMenu extends React.Component {
-	constructor(props) {
-		super(props);
+	buildMenu(menus) {
+		let need_divider = false;
 		
-		// build the menu
-		// TODO: working here, take the array of menu and build a multi-dim object using the key of each
-		// component and breaking the dot-notation
-		//	ex. <span key="admin.main">menu</span>
-		// 		{ admin: { main: '<span key="admin.main">menu</span>' } }
+		let arr_menus = Object.keys(menus).map((key) => {
+			let menu = menus[key];
+			var submenus = [];
+			
+			if (menu.child) {
+				if (need_divider) {
+					submenus.push(<Divider key={menu.key + '_divider'} />);
+				}
+				
+				need_divider = true;
+				
+				submenus.push(menu.header);
+				submenus.push(
+					<Menu.Menu key={menu.key + '_menu'}>
+						{this.buildMenu(menu.child)}
+					</Menu.Menu>
+				);
+			} else if (menu.header) {
+				if (need_divider) {
+					submenus.push(<Divider />);
+				}
+				
+				need_divider = true;
+				
+				submenus.push(menu.header);
+			} else {
+				submenus.push(menu);
+			}
+			
+			return submenus;
+		});
+		
+		return [].concat.apply([], arr_menus);
 	}
 	
 	render() {
+		console.log(menus);
 		return (
-			<Sidebar className="menu" animation="overlay" direction="left" visible>
-				{this._menus}
+			<Sidebar className="menu vertical" animation="overlay" direction="left" visible>
+				<div style={{height: '45px'}} />
+				<Item>
+					{this.buildMenu(menus)}
+				</Item>
 			</Sidebar>
 		);
 	}
