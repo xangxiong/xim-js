@@ -4,8 +4,8 @@ import path from 'path';
 import config from '../webpack.config.js';
 import open from 'open';
 import favicon from 'serve-favicon';
-
-/* eslint-disable no-console */
+import { sessionService, sessionReducer } from 'redux-react-session';
+import { combineReducers, createStore } from 'redux';
 
 const port = 3000;
 const app = express();
@@ -18,6 +18,13 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 app.use(favicon(path.join(__dirname, 'favicon.ico')));
+app.use((req, res) => {
+	const reducer = combineReducers({
+		session: sessionReducer
+	});
+	const store = createStore(reducer);
+	sessionService.initServerSession(store, req);
+});
 
 app.get('*', function(req, res) {
   res.sendFile(path.join( __dirname, 'index.html'));

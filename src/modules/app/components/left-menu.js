@@ -9,7 +9,7 @@ class LeftMenu extends React.Component {
 		
 		let arr_menus = Object.keys(menus).map((key) => {
 			let menu = menus[key];
-			var submenus = [];
+			let submenus = [];
 			
 			if (menu.child) {
 				if (need_divider) {
@@ -26,7 +26,7 @@ class LeftMenu extends React.Component {
 				);
 			} else if (menu.header) {
 				if (need_divider) {
-					submenus.push(<Divider />);
+					submenus.push(<Divider key={menu.key + '_divider'} />);
 				}
 				
 				need_divider = true;
@@ -43,7 +43,6 @@ class LeftMenu extends React.Component {
 	}
 	
 	render() {
-		console.log(menus);
 		return (
 			<Sidebar className="menu vertical" animation="overlay" direction="left" visible>
 				<div style={{height: '45px'}} />

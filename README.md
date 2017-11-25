@@ -6,3 +6,8 @@ Work in progress project for an Inventory Management system base on Nodejs, Redu
 npm install
 npm start
 ```
+
+# Development and Debugging
+```
+npm run start:src
+```

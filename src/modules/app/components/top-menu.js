@@ -17,7 +17,7 @@ class TopMenu extends React.Component {
 				<Menu.Menu position="right">
 					<Dropdown item text="Xang">
 						<Dropdown.Menu>
-							<Dropdown.Item as="a" icon="lock" text="Logout" />
+							<Dropdown.Item as={Link} icon="lock" text="Logout" to="/logout" link />
 						</Dropdown.Menu>
 					</Dropdown>
 				</Menu.Menu>
