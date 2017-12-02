@@ -1,11 +1,11 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import AppRoutes from './modules/app/routes';
 import AuthRoutes from './modules/auth/routes';
+import AppRoutes from './modules/app/routes';
 
 let routes = [];
-routes = routes.concat(AppRoutes);
 routes = routes.concat(AuthRoutes);
+routes = routes.concat(AppRoutes);
 
 export default <Switch>
 	{routes}

@@ -9,7 +9,7 @@
     "start:src": "npm-run-all --parallel open:src lint:watch",
     "build": "babel -d ./dist ./src -s",
     "open": "babel-node dist/server.js",
-    "open:src": "babel-node src/server.js",
+    "open:src": "babel-node --inspect src/server.js",
     "lint": "node_modules/.bin/esw webpack.config.* src",
     "lint:watch": "npm run lint -- --watch"
   },
