@@ -2,12 +2,52 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Grid, Header, Image, Icon, Input, Button, Message } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
+import { Grid, Header, Image, Icon, Input, Button, Message, Form } from 'semantic-ui-react';
 import * as authenticationActions from '../actions/authentication';
 import logo from '../../../images/logo.png';
 
 class Login extends React.Component {
+	constructor(props, context) {
+		super(props, context);
+		
+		this.onSubmit = this.onSubmit.bind(this);
+	}
+	
+	onSubmit(history, e) {
+		const data = new FormData(e.target);
+		const { login } = this.props.actions;
+		
+		e.preventDefault();
+		
+		let user = {};
+		for (let entry of data.entries()) {
+			user[entry[0]] = entry[1];
+		}
+		
+		login(user, history);
+	}
+	
 	render() {
+		const LoginForm = withRouter(({ history }) => (
+			<Form size="large" method="post" onSubmit={(e) => this.onSubmit(history, e)}>
+				<div className="ui raised segment">
+					<div className="field">
+						<div className="ui left icon input">
+							<Input type="text" name="username" icon="user" placeholder="Username" />
+						</div>
+					</div>
+					<div className="field">
+						<div className="ui left icon input">
+							<Input type="password" name="password" icon="lock" placeholder="Password" />
+						</div>
+					</div>
+					<Button fluid size="large" color="blue" type="submit">Login!</Button>
+				</div>
+				<Message error />
+			</Form>
+		));
+		
 		return (
 			<div className="login">
 				<Grid centered>
@@ -16,22 +56,7 @@ class Login extends React.Component {
 							<Image src={logo} />
 							Login using your credentials!
 						</Header>
-						<form className="ui large form">
-							<div className="ui raised segment">
-								<div className="field">
-									<div className="ui left icon input">
-										<Input type="text" id="username" name="username" icon="user" placeholder="Username" />
-									</div>
-								</div>
-								<div className="field">
-									<div className="ui left icon input">
-										<Input type="password" id="password" name="password" icon="lock" placeholder="Password" />
-									</div>
-								</div>
-								<Button fluid size="large" color="blue">Login!</Button>
-							</div>
-							<Message error></Message>
-						</form>
+						<LoginForm />
 					</Grid.Column>
 				</Grid>
 			</div>
@@ -39,10 +64,8 @@ class Login extends React.Component {
 	}
 }
 
-const { object } = PropTypes;
-
 Login.propTypes = {
-	actions: object.isRequired
+	actions: PropTypes.object.isRequired
 };
 
 const mapDispatch = (dispatch) => {

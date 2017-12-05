@@ -7,8 +7,7 @@ import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { sessionService, sessionReducer } from 'redux-react-session';
 import thunkMiddleware from 'redux-thunk';
 import routes from './routes';
-
-require('semantic-ui/dist/semantic.css');
+import semanticCss from 'semantic-ui/dist/semantic.css';
 
 const reducer = combineReducers({
 	session: sessionReducer

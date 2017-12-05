@@ -7,25 +7,35 @@ import PrivateRoute from '../../auth/components/private-route';
 import TopMenu from './top-menu';
 import LeftMenu from './left-menu';
 
-const App = ({ authenticated }) => (
-	<div>
-		<PrivateRoute exact path="/" authenticated={authenticated}/>
-		<LeftMenu />
-		<TopMenu />
-		<Sidebar.Pusher>
-			App
-		</Sidebar.Pusher>
-	</div>
-);
-
-const { bool } = PropTypes;
+class App extends React.Component {
+	render() {
+		return (
+			<div>
+				{ this.props.session.checked && 
+				<PrivateRoute exact path="/" authenticated={this.props.session.authenticated}/>
+				}
+				<LeftMenu />
+				<TopMenu user={this.props.session.user} />
+				<Sidebar.Pusher>
+					App
+				</Sidebar.Pusher>
+			</div>
+		);
+	}
+}
 
 App.propTypes = {
-	authenticated: bool.isRequired
+	session: PropTypes.object.isRequired
 };
 
-const mapState = ({ session }) => ({
-	authenticated: session.authenticated
+const mapState = (state) => ({
+	session: state.session
 });
 
-export default connect(mapState)(App);
+const mapDispatch = (dispatch) => {
+	return {
+		
+	};
+};
+
+export default connect(mapState, mapDispatch)(App);

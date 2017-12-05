@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Route, Link } from 'react-router-dom';
 import { Icon, Sidebar, Dropdown, Item, Menu } from 'semantic-ui-react';
 import logo from '../../../images/logo-dark.png';
@@ -15,9 +16,9 @@ class TopMenu extends React.Component {
 					<Icon name="sidebar" />
 				</Item>
 				<Menu.Menu position="right">
-					<Dropdown item text="Xang">
+					<Dropdown item text={this.props.user.first_name}>
 						<Dropdown.Menu>
-							<Dropdown.Item as={Link} icon="lock" text="Logout" to="/logout" link />
+							<Dropdown.Item as={Link} icon="lock" text="Logout" to="/logout" />
 						</Dropdown.Menu>
 					</Dropdown>
 				</Menu.Menu>
@@ -25,5 +26,9 @@ class TopMenu extends React.Component {
 		);
 	}
 }
+
+TopMenu.propTypes = {
+	user: PropTypes.object.isRequired
+};
 
 export default TopMenu;
