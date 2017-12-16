@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { Grid, Header, Image, Icon, Input, Button, Message, Form } from 'semantic-ui-react';
 import * as authenticationActions from '../actions/authentication';
-import logo from '../../../images/logo.png';
+//import logo from '../../../images/logo.png';
 
 class Login extends React.Component {
 	constructor(props, context) {
@@ -47,13 +47,13 @@ class Login extends React.Component {
 				<Message error />
 			</Form>
 		));
-		
+		// <Image src={logo} />
 		return (
 			<div className="login">
 				<Grid centered>
 					<Grid.Column textAlign="center">
 						<Header color="grey">
-							<Image src={logo} />
+							
 							Login using your credentials!
 						</Header>
 						<LoginForm />

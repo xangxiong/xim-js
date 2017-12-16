@@ -2,14 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Link } from 'react-router-dom';
 import { Icon, Sidebar, Dropdown, Item, Menu } from 'semantic-ui-react';
-import logo from '../../../images/logo-dark.png';
+//import logo from '../../../images/logo-dark.png';
 
+// <img src={logo} className="logo" />
 class TopMenu extends React.Component {
 	render() {
 		return (
 			<Sidebar className="menu inverted" animation="overlay" direction="top" visible>
 				<Item as="a" className="header">
-					<img src={logo} className="logo" />
+					
 					<div className="space left">XIM</div>
 				</Item>
 				<Item as="a">

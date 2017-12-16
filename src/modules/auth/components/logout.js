@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Redirect} from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -16,9 +17,11 @@ class Logout extends React.Component {
 	
 	render() {
 		let { finished } = this.state;
+		const { logout } = this.props.actions;
+		
 		const LogoutAction = withRouter(({ history }) => {
 			if (!finished) {
-				authenticationActions.logout().then(() => {
+				logout(history).then(() => {
 					finished = true;
 					this.setState({ finished });
 				}).catch((err) => console.error(err));
@@ -36,6 +39,10 @@ class Logout extends React.Component {
 		);
 	}
 }
+
+Logout.propTypes = {
+	actions: PropTypes.object.isRequired
+};
 
 const mapDispatch = (dispatch) => {
 	return {

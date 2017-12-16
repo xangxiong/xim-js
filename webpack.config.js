@@ -1,7 +1,18 @@
 import webpack from 'webpack';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import autoprefixer from 'autoprefixer';
 import path from 'path';
 
+const GLOBALS = {
+  'process.env.SERV_REN': process.env.SERV_REN !== false,
+  'process.env.NODE_ENV': process.env.NODE_ENV || 'development',
+  __DEV__: process.env.NODE_ENV !== "production"
+};
+
 export default {
+  resolve: {
+    extensions: ['*', '.js', '.jsx', '.json']
+  },
   devtool: 'cheap-module-eval-source-map',
   entry: [
     'eventsource-polyfill',
@@ -15,7 +26,25 @@ export default {
     filename: 'bundle.js'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    // react to build in prod mode
+    new webpack.DefinePlugin(GLOBALS),
+    
+    // minify js
+    new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
+    
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+      noInfo: true,
+      options: {
+        sassLoader: {
+          includePaths: [path.resolve(__dirname, 'src', 'scss')]
+        },
+        context: '/',
+        postcss: () => [autoprefixer]
+      }
+    })
+    //new webpack.HotModuleReplacementPlugin()
   ],
   module: {
     loaders: [
