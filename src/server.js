@@ -4,10 +4,16 @@ import Express from 'express';
 import Webpack from 'webpack';
 import React from 'react';
 import config from '../webpack.config.js';
+
 import open from 'open';
 import favicon from 'serve-favicon';
+import logger from 'morgan';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+
 import { renderToString } from 'react-dom/server';
-import { matchPath, RouterContext } from 'react-router';
+import StaticRouter from 'react-router-dom/StaticRouter';
+import { matchRoutes, renderRoutes } from 'react-router-config';
 import { Provider } from 'react-redux';
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
@@ -22,6 +28,13 @@ const server = new Server(app);
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+app.locals.pretty = true;
+
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false}));
+app.use(cookieParser());
 
 if (dev) {
 	const compiler = new Webpack(config);
@@ -50,40 +63,70 @@ if (dev) {
 }
 
 if (serv_ren) {
-	const handleRender = (req, res) => {
-		const reducer = combineReducers({
-			session: sessionReducer
-		});
-		const store = createStore(reducer, undefined, compose(applyMiddleware(thunkMiddleware)));
+	/*eslint-disable*/
+	const router = Express.Router();
+	/*eslint-enable*/
+	const reducer = combineReducers({
+		session: sessionReducer
+	});
+	const store = createStore(reducer, undefined, compose(applyMiddleware(thunkMiddleware)));	
+	
+	router.get('*', (req, res) => {
 		sessionService.initServerSession(store, req);
+		const branch = matchRoutes(routes, req.url);
+		const promises = branch.map(({route}) => {
+			let fetchData = route.component.fetchData;
+			return fetchData instanceof Function ? fetchData(store) : Promise.resolve(null);
+		});
 		
-		// NOTE: this no longer works for react-router 4
-		matchPath(
-			{ routes, location: req.url },
-			(err, redirectLocation, renderProps) => {
-				if (err) {
-					return res.status(500).send(err.message);
-				}
-				
-				if (redirectLocation) {
-					return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-				}
-				
-				let markup;
-				if (renderProps) {
-					markup = renderToString(
-						<Provider store={store} key="provider">
-							<RouterContext {...renderProps} />
-						</Provider>
-					);
-				}
-				
-				const preloadedState = JSON.stringify(store.getState()).replace(/</g, '\\u003c');			
-				return res.render('index', { markup, preloadedState });
+		return Promise.all(promises).then((data) => {
+			let context = {};
+			const content = renderToString(
+				<Provider store={store}>
+					<StaticRouter location={req.url} context={context}>
+						{renderRoutes(routes)}
+					</StaticRouter>
+				</Provider>
+			);
+			
+			if (context.status === 404) {
+				res.status(404);
 			}
-		);
-	};
-	app.use(handleRender);
+			if (context.status == 302) {
+				return res.redirect(302, context.url);
+			}
+			
+			res.render('index', {
+				data: store.getState(),
+				context
+			});
+		});
+	});
+	
+	app.use('/', router);
+	app.use(function(req, res, next) {
+		let err = new Error('Not Found');
+		err.status = 404;
+		next(err);
+	});
+}
+
+if (dev) {
+	app.use(function(err, req, res, next) {
+		res.status(err.status || 500);
+		res.render('error', {
+			message: err.message,
+			error: err
+		});
+	});
+} else {
+	app.use(function(err, req, res, next) {
+		res.status(err.status || 500);
+		res.render('error', {
+			message: err.message,
+			error: {}
+		});
+	});
 }
 
 server.listen(port, err => {

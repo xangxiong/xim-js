@@ -5,7 +5,7 @@
       "presets": ["latest"]
     },
     "production": {
-      "presets": ["latest", { "es2015": { "modules": false } }],
+      "presets": ["latest", { "env": { "modules": false } }],
 	  "plugins": [
         "transform-react-constant-elements",
         "transform-react-remove-prop-types"
