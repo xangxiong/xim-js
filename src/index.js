@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { sessionService, sessionReducer } from 'redux-react-session';
 import thunk from 'redux-thunk';
@@ -23,7 +23,9 @@ render((
 	<Provider store={store}>
 		<BrowserRouter>
 			<div id="routes">
-				{routes}
+				<Switch>
+					{routes}
+				</Switch>
 			</div>
 		</BrowserRouter>
 	</Provider>

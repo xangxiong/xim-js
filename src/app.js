@@ -9,16 +9,6 @@ import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 
-import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
-import { matchRoutes, renderRoutes } from 'react-router-config';
-import { Provider } from 'react-redux';
-import { combineReducers, createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { sessionService, sessionReducer } from 'redux-react-session';
-
-import routes from './routes';
-
 const env = process.env.NODE_ENV || 'development';
 const dev = (env !== 'production');
 const app = Express();
@@ -48,55 +38,10 @@ if (dev) {
 	app.use(Express.static(__dirname + '../dist'));
 }
 
-/*eslint-disable*/
-const router = Express.Router();
-/*eslint-enable*/
-const reducer = combineReducers({
-	session: sessionReducer
-});
-const store = createStore(reducer, applyMiddleware(thunk));
-
-router.get('*', (req, res) => {
-	sessionService.initServerSession(store, req);
-	
-	const branch = matchRoutes(routes, req.url);
-	const promises = branch.map(({route}) => {
-		let fetchData = (route.component) ? route.component.fetchData : null;
-		return fetchData instanceof Function ? fetchData(store) : Promise.resolve(null);
+app.get('*', function response(req, res) {
+	res.render('index', {
+		title: 'XIM - JS'
 	});
-	
-	return Promise.all(promises).then((data) => {
-		let context = {};
-		const content = renderToString(
-			<Provider store={store}>
-				<StaticRouter location={req.url} context={context}>
-					{renderRoutes(routes)}
-				</StaticRouter>
-			</Provider>
-		);
-		
-		if (context.status === 404) {
-			res.status(404);
-		}
-		if (context.status == 302) {
-			return res.redirect(302, context.url);
-		}
-		
-		res.render('index', {
-			title: 'XIM - JS',
-			data: store.getState(),
-			content
-		});
-	});
-});
-
-app.use('/', router);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-	let err = new Error('Not Found');
-	err.status = 404;
-	next(err);
 });
 
 // error handlers

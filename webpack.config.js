@@ -4,9 +4,8 @@ import autoprefixer from 'autoprefixer';
 import path from 'path';
 
 const GLOBALS = {
-  'process.env.SERV_REN': process.env.SERV_REN !== false,
-  'process.env.NODE_ENV': process.env.NODE_ENV || 'development',
-  __DEV__: process.env.NODE_ENV !== "production"
+  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+  __DEV__: process.env.NODE_ENV !== 'production'
 };
 
 export default {
@@ -43,8 +42,9 @@ export default {
         context: '/',
         postcss: () => [autoprefixer]
       }
-    })
-    //new webpack.HotModuleReplacementPlugin()
+    }),
+    
+    new webpack.HotModuleReplacementPlugin()
   ],
   module: {
     loaders: [
